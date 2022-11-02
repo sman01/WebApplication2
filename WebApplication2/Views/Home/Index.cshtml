@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" action="@Url.Action("Login", "Home")" >
+            <div class="mb-3">
+                <label for="uname" class="form-label">username</label>
+                <input type="text" class="form-control" id="uname" >
+            </div>
+            <div class="mb-3">
+                <label for="pass" class="form-label">Password</label>
+                <input type="password" class="form-control" id="pass">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>

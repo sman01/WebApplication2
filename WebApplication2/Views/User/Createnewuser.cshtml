@@ -1,0 +1,158 @@
+﻿
+@model WebApplication2.Models.NewUser
+
+
+
+
+<div class="modal-dialog" id="ModalPopUp1">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">@ViewBag.Message</h4>
+        </div>
+        <form method="POST" , class="form-horizontal" id="ModalForm1">
+            <div class="modal-body">
+
+                <div class="form-horizontal" style="padding-bottom:5px">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.uname, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.uname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.uname, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.pass, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.pass, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.pass, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.access, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.access, new {@id="access", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.access, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.email, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.designation, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.designation, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.designation, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="modal-footer" style="padding:5px">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <button type="button" class="btn btn-default" id="close" data-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-primary" id="confirmok1" value="Save changes" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        console.log();
+        $("#close").click(function () {
+            window.location.reload();
+
+        });
+        $("#access").focusout(function () {
+            if ($(this).val() >@(Convert.ToInt32(Session["access"])) || $(this).val() < 0) {
+                $(this).css('border', 'solid 2px red');
+                $(":submit").attr("disabled", true);
+
+            }
+            else {
+
+                // If it is not blank.
+                $(this).css('border', 'solid 2px green');
+                $(":submit").removeAttr("disabled");
+            }
+        }).trigger("focusout");
+        $(".btn-primary").click(function () {
+            var std1 = document.getElementById("uname").value;
+            var std2 = document.getElementById("pass").value;
+            var std3 = document.getElementById("access").value;
+            var std4 = document.getElementById("name").value;
+            var std5 = document.getElementById("email").value;
+            var std6 = document.getElementById("designation").value;
+            var title = $(this).attr("title");
+            $("#ModalPopUp1").modal({
+                backdrop: "static",
+                keyboard: false
+            })
+
+                .on("click", "#confirmok1", function (e) {
+                    var sess = '@Session["access"]';
+                    if (sess >= std3) {
+                        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+                    }
+                    console.log("{uname: " + JSON.stringify(std1) + ", pass: " + JSON.stringify(std2) + ", access: " + JSON.stringify(parseInt(std3)) + ", name: " + JSON.stringify(std4) + ", email: " + JSON.stringify(std5) + ", designation: " + JSON.stringify(std6) + "}")
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("Createnewuser")",
+                        data: "{uname: " + JSON.stringify(std1) + ", pass: " + JSON.stringify(std2) + ", access: " + JSON.stringify(parseInt(std3)) + ", name: " + JSON.stringify(std4) + ", email: " + JSON.stringify(std5) + ", designation: " + JSON.stringify(std6) + "}",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            $("#ModalPopUp1").modal("hide");
+                            setTimeout(function () {
+                                window.location.reload();
+
+
+                            }, 500);
+
+
+                        },
+
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                            alert("oops, something bad happened")
+
+                        }
+
+                    });
+
+                });
+
+        });
+
+
+
+    });
+
+
+
+</script>
+
+
